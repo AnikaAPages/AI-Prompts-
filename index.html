@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Prompts for Social Media</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0e0c;
+    --paper: #f5f0e8;
+    --cream: #ede7d9;
+    --gold: #c9a84c;
+    --rust: #b85c38;
+    --sage: #5a7a5e;
+    --muted: #8a8078;
+    --border: #d4cbbf;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--ink);
+    padding: 60px 40px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 20px,
+      rgba(201,168,76,0.04) 20px,
+      rgba(201,168,76,0.04) 21px
+    );
+  }
+
+  .header-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 900;
+    color: var(--paper);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  header h1 span {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .header-sub {
+    font-size: 14px;
+    color: rgba(245,240,232,0.5);
+    margin-top: 14px;
+    letter-spacing: 0.05em;
+  }
+
+  /* FILTER BAR */
+  .filter-bar {
+    background: var(--cream);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 40px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .filter-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-right: 8px;
+  }
+
+  .filter-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    border-radius: 2px;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
+  /* GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    padding: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  /* CARD */
+  .card {
+    background: var(--paper);
+    padding: 32px 28px;
+    cursor: pointer;
+    transition: background 0.2s;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .card:hover {
+    background: #fff;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .card-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+
+  .card-category {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .cat-content { background: rgba(90,122,94,0.12); color: var(--sage); }
+  .cat-engagement { background: rgba(184,92,56,0.10); color: var(--rust); }
+  .cat-strategy { background: rgba(201,168,76,0.12); color: #9a7830; }
+  .cat-analytics { background: rgba(15,14,12,0.07); color: var(--muted); }
+  .cat-brand { background: rgba(90,122,94,0.08); color: #3d5e41; }
+
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--ink);
+  }
+
+  .card-prompt {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #3a3530;
+    background: var(--cream);
+    border-left: 2px solid var(--gold);
+    padding: 12px 14px;
+    font-family: 'DM Mono', monospace;
+    font-weight: 300;
+    border-radius: 0 2px 2px 0;
+  }
+
+  .card-prompt .bracket {
+    color: var(--rust);
+    font-weight: 500;
+  }
+
+  .copy-btn {
+    align-self: flex-end;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 2px;
+  }
+
+  .copy-btn:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  .copy-btn.copied {
+    border-color: var(--sage);
+    color: var(--sage);
+  }
+
+  /* SECTION DIVIDERS */
+  .section-header {
+    grid-column: 1 / -1;
+    background: var(--cream);
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .section-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    color: rgba(245,240,232,0.4);
+    text-align: center;
+    padding: 28px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+
+  .hidden { display: none !important; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card { animation: fadeIn 0.3s ease both; }
+</style>
+</head>
+<body>
+<div style="
+  display:flex;
+  gap:10px;
+  padding:16px 24px;
+  background:#fff;
+  border-bottom:1px solid #ddd;
+  position:sticky;
+  top:0;
+  z-index:999;
+">
+  <a href="index.html" style="
+    padding:8px 14px;
+    text-decoration:none;
+    background:black;
+    color:white;
+    font-size:12px;
+    letter-spacing:0.08em;
+  ">SOCIAL</a>
+
+  <a href="metrics.html" style="
+    padding:8px 14px;
+    text-decoration:none;
+    border:1px solid black;
+    color:black;
+    font-size:12px;
+    letter-spacing:0.08em;
+  ">METRICS</a>
+</div>
+
+
+<header>
+  <span class="header-label">Professional Resource</span>
+  <h1>20+ AI Prompts for<br><span>Social Media</span></h1>
+  <p class="header-sub">Copy · Customize · Post</p>
+</header>
+
+<div class="filter-bar">
+  <span class="filter-label">Filter —</span>
+  <button class="filter-btn active" onclick="filterCards('all', this)">All</button>
+  <button class="filter-btn" onclick="filterCards('content', this)">Content</button>
+  <button class="filter-btn" onclick="filterCards('engagement', this)">Engagement</button>
+  <button class="filter-btn" onclick="filterCards('strategy', this)">Strategy</button>
+  <button class="filter-btn" onclick="filterCards('analytics', this)">Analytics</button>
+  <button class="filter-btn" onclick="filterCards('brand', this)">Brand</button>
+</div>
+
+<div class="grid" id="grid">
+
+  <!-- SECTION: CONTENT CREATION -->
+  <div class="section-header">
+    <h2>Content Creation</h2>
+    <div class="section-line"></div>
+    <span class="section-count">11 prompts</span>
+  </div>
+
+  <div class="card" data-cat="content">
+    <div class="card-header">
+      <span class="card-number">01</span>
+      <span class="card-category cat-content">Content</span>
+    </div>
+    <div class="card-title">Caption Batch Generator</div>
+    <div class="card-prompt">Write 10 engaging social media captions for a <span class="bracket">[brand/niche]</span> brand targeting <span class="bracket">[audience]</span> on <span class="bracket">[platform: IG / TikTok / Facebook / LinkedIn / X]</span>. Match tone and length to the platform's culture. Mix educational, inspirational, and promotional angles. Include 1–2 CTAs per caption.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <div class="card" data-cat="content">
+    <div class="card-header">
+      <span class="card-number">02</span>
+      <span class="card-category cat-content">Content</span>
+    </div>
+    <div class="card-title">Thought Leadership Post</div>
+    <div class="card-prompt">Write a thought leadership post for <span class="bracket">[platform: IG / TikTok / Facebook / LinkedIn / X]</span> where I share a counterintuitive insight about <span class="bracket">[industry topic]</span>. Open with a bold hook, build with a short personal story or data point, and close with a question to drive comments. Match length and format to the platform.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <div class="card" data-cat="content">
+    <div class="card-header">
+      <span class="card-number">03</span>
+      <span class="card-category cat-content">Content</span>
+    </div>
+    <div class="card-title">Carousel / Slide Series Script</div>
+    <div class="card-prompt">Create a 7-slide carousel or slide series script on "<span class="bracket">[topic]</span>" for <span class="bracket">[platform: IG / TikTok / Facebook / LinkedIn / X]</span>. Slide 1: bold hook. Slides 2–6: one key point each with a short explanation. Slide 7: summary + CTA. Keep each slide to 1–2 punchy sentences.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <div class="card" data-cat="content">
+    <div class="card-header">
+      <span class="card-number">04</span>
+      <span class="card-category cat-content">Content</span>
+    </div>
+    <div class="card-title">Serial / Thread Post Writer</div>
+    <div class="card-prompt">Write a 10-part thread or serial post about <span class="bracket">[topic]</span> for <span class="bracket">[platform: IG / TikTok / Facebook / LinkedIn / X]</span> targeting <span class="bracket">[audience]</span>. Part 1 must hook with a bold claim or surprising stat. Format each part to fit the platform's character or format limits. End with a post that drives shares or saves.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <div class="card" data-cat="content">
+    <div class="card-header">
+      <span class="card-number">05</span>
+      <span class="card-category cat-content">Content</span>
+    </div>
+    <div class="card-title">Short-Form Video Script</div>
+    <div class="card-prompt">Write a 30-second video script for <span class="bracket">[brand/creator]</span> about <span class="bracket">[topic]</span> for <span class="bracket">[platform: IG Reels / TikTok / Facebook / LinkedIn / X]</span>. Include a hook in the first 3 seconds, clear value delivery in the middle, and a scroll-stopping CTA at the end. Add b-roll or on-screen text suggestions in brackets.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <div class="card" data-cat="content">
+    <div class="card-header">
+      <span class="card-number">06</span>
+      <span class="card-category cat-content">Content</span>
+    </div>
+    <div class="card-title">Repurpose Blog → Social Posts</div>
+    <div class="card-prompt">Repurpose the following blog post into 5 distinct social media posts — one for each of these platforms: Instagram, TikTok, Facebook, LinkedIn, and X. Adapt the tone, format, and length to fit each platform's culture and audience expectations. Blog post: <span class="bracket">[paste blog content]</span></div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <div class="card" data-cat="content">
+    <div class="card-header">
+      <span class="card-number">07</span>
+      <span class="card-category cat-content">Content</span>
+    </div>
+    <div class="card-title">Holiday / Seasonal Content</div>
+    <div class="card-prompt">Create 5 social media posts for <span class="bracket">[brand]</span> around <span class="bracket">[holiday/season]</span>. Make them feel authentic and on-brand — not generic. Include a mix of formats: one story, one caption, one poll or question, and two short-form copy options.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <div class="card" data-cat="content">
+    <div class="card-header">
+      <span class="card-number">08</span>
+      <span class="card-category cat-content">Content</span>
+    </div>
+    <div class="card-title">Behind-the-Scenes Series</div>
+    <div class="card-prompt">Write a 5-part behind-the-scenes content series for <span class="bracket">[brand]</span> showing <span class="bracket">[process/event]</span> on <span class="bracket">[platform: IG / TikTok / Facebook / LinkedIn / X]</span>. Each post should feel candid and human. Include suggested interactive prompts — polls, questions, or reaction hooks — suited to the platform's engagement features.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <div class="card" data-cat="content">
+    <div class="card-header">
+      <span class="card-number">09</span>
+      <span class="card-category cat-content">Content</span>
+    </div>
+    <div class="card-title">Customer Testimonial Rewrite</div>
+    <div class="card-prompt">Rewrite the following raw customer review into a polished, platform-ready social post for <span class="bracket">[platform: IG / TikTok / Facebook / LinkedIn / X]</span> for <span class="bracket">[brand]</span>. Keep the customer's authentic voice but make it scannable, emotionally resonant, and on-brand. Add a brief setup line and a CTA. Review: <span class="bracket">[paste review]</span></div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <div class="card" data-cat="content">
+    <div class="card-header">
+      <span class="card-number">10</span>
+      <span class="card-category cat-content">Content</span>
+    </div>
+    <div class="card-title">Event Coverage Content Plan</div>
+    <div class="card-prompt">Create a real-time content plan for <span class="bracket">[brand]</span> covering <span class="bracket">[event: bridal expo / trunk show / brand activation / local festival]</span> across <span class="bracket">[platforms]</span>. Include: pre-event teaser posts, 3–5 during-event content moments with copy and format suggestions, and 2 post-event recap formats. Flag which moments work best for Stories vs. feed vs. video.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <div class="card" data-cat="content">
+    <div class="card-header">
+      <span class="card-number">11</span>
+      <span class="card-category cat-content">Content</span>
+    </div>
+    <div class="card-title">Cross-Platform Repurpose Workflow</div>
+    <div class="card-prompt">Take this top-performing social post: <span class="bracket">[paste post + platform it ran on]</span>. Repurpose it into 4 new formats for the remaining platforms — Instagram, TikTok, Facebook, LinkedIn, and X — keeping the core idea but rewriting the hook, format, and length to feel native to each. Flag any format that doesn't suit the content and explain why.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <!-- SECTION: ENGAGEMENT -->
+  <div class="section-header">
+    <h2>Engagement & Community</h2>
+    <div class="section-line"></div>
+    <span class="section-count">6 prompts</span>
+  </div>
+
+  <div class="card" data-cat="engagement">
+    <div class="card-header">
+      <span class="card-number">12</span>
+      <span class="card-category cat-engagement">Engagement</span>
+    </div>
+    <div class="card-title">Comment Reply Templates</div>
+    <div class="card-prompt">Write 10 comment reply templates for a <span class="bracket">[brand/niche]</span> social account. Cover: positive praise, neutral questions, mild complaints, and partnership inquiries. Keep replies warm, on-brand, and under 2 sentences each.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <div class="card" data-cat="engagement">
+    <div class="card-header">
+      <span class="card-number">10</span>
+      <span class="card-category cat-engagement">Engagement</span>
+    </div>
+    <div class="card-title">Giveaway / Contest Copy</div>
+    <div class="card-prompt">Write a giveaway post for <span class="bracket">[brand]</span> offering <span class="bracket">[prize]</span>. Include an attention-grabbing opener, clear entry rules (follow, like, tag a friend), deadline, and a sense of urgency. Keep it under 150 words and write in a tone that matches <span class="bracket">[brand voice: playful / premium / bold]</span>.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <div class="card" data-cat="engagement">
+    <div class="card-header">
+      <span class="card-number">11</span>
+      <span class="card-category cat-engagement">Engagement</span>
+    </div>
+    <div class="card-title">Poll & Question Post Ideas</div>
+    <div class="card-prompt">Generate 10 engaging poll or question post ideas for a <span class="bracket">[brand/industry]</span> social account. Mix lighthearted and opinion-driven prompts. Each idea should feel native to the platform and invite genuine audience responses.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <div class="card" data-cat="engagement">
+    <div class="card-header">
+      <span class="card-number">12</span>
+      <span class="card-category cat-engagement">Engagement</span>
+    </div>
+    <div class="card-title">DM Outreach Script</div>
+    <div class="card-prompt">Write a friendly, non-salesy DM outreach message for <span class="bracket">[goal: collaboration / feedback / partnership]</span> targeting <span class="bracket">[audience type]</span> on <span class="bracket">[platform]</span>. It should feel human, reference something specific, and include a low-friction ask.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <div class="card" data-cat="engagement">
+    <div class="card-header">
+      <span class="card-number">13</span>
+      <span class="card-category cat-engagement">Engagement</span>
+    </div>
+    <div class="card-title">UGC Request Post</div>
+    <div class="card-prompt">Write a social post encouraging customers to share photos or videos of <span class="bracket">[product/experience]</span> for <span class="bracket">[brand]</span>. Make it feel like an invitation, not a demand. Include an incentive hook, a clear submission CTA, and language that makes sharing feel worth their time.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <div class="card" data-cat="engagement">
+    <div class="card-header">
+      <span class="card-number">17</span>
+      <span class="card-category cat-engagement">Engagement</span>
+    </div>
+    <div class="card-title">"Link in Bio" CTA Copy Variations</div>
+    <div class="card-prompt">Write 10 "link in bio" CTA lines for <span class="bracket">[brand]</span> that drive clicks to <span class="bracket">[destination: booking page / editorial / product / event]</span>. Vary the approach: urgency, curiosity, benefit-led, soft ask, and conversational. Each line should feel native to <span class="bracket">[platform: IG / TikTok / Facebook / LinkedIn / X]</span> and avoid sounding like a template.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <!-- SECTION: STRATEGY -->
+  <div class="section-header">
+    <h2>Strategy & Planning</h2>
+    <div class="section-line"></div>
+    <span class="section-count">9 prompts</span>
+  </div>
+
+  <div class="card" data-cat="strategy">
+    <div class="card-header">
+      <span class="card-number">14</span>
+      <span class="card-category cat-strategy">Strategy</span>
+    </div>
+    <div class="card-title">Monthly Content Calendar</div>
+    <div class="card-prompt">Build a 30-day social media content calendar for <span class="bracket">[brand]</span> in the <span class="bracket">[industry]</span> space. Posting cadence: <span class="bracket">[X times/week]</span> on <span class="bracket">[platforms]</span>. Mix content pillars: educational, promotional, entertaining, and community. Output as a table with Date, Platform, Content Type, and Topic.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <div class="card" data-cat="strategy">
+    <div class="card-header">
+      <span class="card-number">15</span>
+      <span class="card-category cat-strategy">Strategy</span>
+    </div>
+    <div class="card-title">Competitor Content Audit Prompt</div>
+    <div class="card-prompt">I'll paste 10 posts from a competitor: <span class="bracket">[paste content]</span>. Analyze their content strategy: What topics do they lean into? What formats do they favor? What engagement patterns do you notice? What gaps can I exploit?</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <div class="card" data-cat="strategy">
+    <div class="card-header">
+      <span class="card-number">16</span>
+      <span class="card-category cat-strategy">Strategy</span>
+    </div>
+    <div class="card-title">Content Pillar Builder</div>
+    <div class="card-prompt">Help me define 5 content pillars for a <span class="bracket">[brand/creator]</span> in the <span class="bracket">[niche]</span> space targeting <span class="bracket">[audience]</span>. For each pillar: give it a name, describe what it covers, suggest 3 post ideas, and explain how it serves the audience and business goals.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <div class="card" data-cat="strategy">
+    <div class="card-header">
+      <span class="card-number">17</span>
+      <span class="card-category cat-strategy">Strategy</span>
+    </div>
+    <div class="card-title">Platform-Specific Strategy Brief</div>
+    <div class="card-prompt">Create a 90-day social media strategy for <span class="bracket">[brand]</span> focusing on <span class="bracket">[platform]</span>. Include: growth goals, content themes, posting frequency, engagement tactics, and 3 KPIs to track. Format as a brief I can share with a client or team.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <div class="card" data-cat="strategy">
+    <div class="card-header">
+      <span class="card-number">18</span>
+      <span class="card-category cat-strategy">Strategy</span>
+    </div>
+    <div class="card-title">Campaign Launch Plan</div>
+    <div class="card-prompt">Write a social media launch plan for <span class="bracket">[product/event/campaign]</span>. Include a pre-launch teaser phase (1 week out), launch day content, and a post-launch engagement push (3 days after). Specify content types, copy directions, and timing for each phase.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <div class="card" data-cat="strategy">
+    <div class="card-header">
+      <span class="card-number">18b</span>
+      <span class="card-category cat-strategy">Strategy</span>
+    </div>
+    <div class="card-title">Short-Form Video Content Strategy</div>
+    <div class="card-prompt">Build a short-form video content strategy for <span class="bracket">[brand]</span> targeting <span class="bracket">[audience]</span> across <span class="bracket">[platforms: IG Reels / TikTok / Facebook / LinkedIn / X]</span>. Include: 3 recurring series ideas with format descriptions, guidance on pacing and on-screen text, how to use trending audio authentically, and a cross-posting workflow to maximize each video's reach.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <div class="card" data-cat="strategy">
+    <div class="card-header">
+      <span class="card-number">26</span>
+      <span class="card-category cat-strategy">Strategy</span>
+    </div>
+    <div class="card-title">Influencer & Creator Collab Brief</div>
+    <div class="card-prompt">Write a creator collaboration brief for <span class="bracket">[brand]</span> targeting <span class="bracket">[creator type: micro-influencer / local lifestyle creator / bridal content creator]</span>. Include: brand overview, campaign goal, content deliverables, key messages to hit, what NOT to say, approval process, and compensation structure. Tone should feel like a partnership, not a directive.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <div class="card" data-cat="strategy">
+    <div class="card-header">
+      <span class="card-number">27</span>
+      <span class="card-category cat-strategy">Strategy</span>
+    </div>
+    <div class="card-title">Seasonal Campaign Calendar</div>
+    <div class="card-prompt">Build a seasonal social media campaign calendar for <span class="bracket">[brand: bridal / regional lifestyle]</span> covering <span class="bracket">[season or date range]</span>. Factor in industry-specific peaks — for bridal: engagement season (Nov–Feb), trunk shows, and wedding season (May–Oct); for lifestyle: local events, editorial cycles, and regional milestones. Output as a table with Month, Campaign Theme, Key Content Moments, and Platform Focus.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <div class="card" data-cat="strategy">
+    <div class="card-header">
+      <span class="card-number">28</span>
+      <span class="card-category cat-strategy">Strategy</span>
+    </div>
+    <div class="card-title">Social Listening & Trend Spotting</div>
+    <div class="card-prompt">Act as a social media trend analyst for a <span class="bracket">[bridal / regional lifestyle]</span> brand. Based on current platform behavior, identify: 5 content trends gaining traction in this space, 3 audience conversation themes worth joining, and 2 formats or styles that are overused and losing engagement. For each trend, suggest a specific, on-brand post idea for <span class="bracket">[brand]</span>.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <!-- SECTION: ANALYTICS -->
+  <div class="section-header">
+    <h2>Analytics & Optimization</h2>
+    <div class="section-line"></div>
+    <span class="section-count">3 prompts</span>
+  </div>
+
+  <div class="card" data-cat="analytics">
+    <div class="card-header">
+      <span class="card-number">19</span>
+      <span class="card-category cat-analytics">Analytics</span>
+    </div>
+    <div class="card-title">Performance Report Narrative</div>
+    <div class="card-prompt">Here are my social media metrics for <span class="bracket">[time period]</span>: <span class="bracket">[paste data]</span>. Write a 3-paragraph performance summary I can share with a client or stakeholder. Highlight wins, flag concerns, and suggest 2–3 actionable next steps based on the data.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <div class="card" data-cat="analytics">
+    <div class="card-header">
+      <span class="card-number">20</span>
+      <span class="card-category cat-analytics">Analytics</span>
+    </div>
+    <div class="card-title">A/B Hook Tester</div>
+    <div class="card-prompt">Write 5 different opening lines (hooks) for this social post: <span class="bracket">[paste post]</span>. Vary the approach — try curiosity, controversy, a bold stat, a relatable pain point, and a direct promise. I'll test them and report back on which performs best.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <div class="card" data-cat="analytics">
+    <div class="card-header">
+      <span class="card-number">21</span>
+      <span class="card-category cat-analytics">Analytics</span>
+    </div>
+    <div class="card-title">Keyword & SEO Optimization for Social</div>
+    <div class="card-prompt">Identify the top 10 search keywords and phrases my target audience uses when looking for <span class="bracket">[topic/product/service]</span> on <span class="bracket">[platform: IG / TikTok / Facebook / LinkedIn / X]</span>. For each keyword, suggest how to naturally work it into captions, titles, or on-screen text to improve discoverability without sounding forced.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <!-- SECTION: BRAND VOICE -->
+  <div class="section-header">
+    <h2>Brand Voice & Identity</h2>
+    <div class="section-line"></div>
+    <span class="section-count">3 prompts</span>
+  </div>
+
+  <div class="card" data-cat="brand">
+    <div class="card-header">
+      <span class="card-number">22</span>
+      <span class="card-category cat-brand">Brand</span>
+    </div>
+    <div class="card-title">Brand Voice Guide Builder</div>
+    <div class="card-prompt">Create a social media brand voice guide for <span class="bracket">[brand]</span>. Include: tone descriptors (what we are vs. what we're not), vocabulary dos and don'ts, example phrases, and how the voice shifts slightly across <span class="bracket">[platforms]</span>. Make it usable by a content team or freelancer.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <div class="card" data-cat="brand">
+    <div class="card-header">
+      <span class="card-number">23</span>
+      <span class="card-category cat-brand">Brand</span>
+    </div>
+    <div class="card-title">Bio Rewrite (Any Platform)</div>
+    <div class="card-prompt">Rewrite my <span class="bracket">[platform]</span> bio for <span class="bracket">[brand/creator name]</span>. Current bio: <span class="bracket">[paste]</span>. Goals: attract <span class="bracket">[target audience]</span>, communicate <span class="bracket">[core value prop]</span>, and drive <span class="bracket">[action: follows / clicks / DMs]</span>. Give me 3 versions to choose from.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+  <div class="card" data-cat="brand">
+    <div class="card-header">
+      <span class="card-number">24</span>
+      <span class="card-category cat-brand">Brand</span>
+    </div>
+    <div class="card-title">Crisis Response Copy</div>
+    <div class="card-prompt">Draft a social media response for <span class="bracket">[brand]</span> addressing <span class="bracket">[situation: negative press / product issue / controversy]</span>. The tone should be accountable, human, and non-defensive. Include a short public post and a DM template for affected customers. Avoid corporate jargon.</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+  </div>
+
+</div>
+
+<footer>
+  32 Professional AI Prompts · Replace all <span style="color:var(--gold)">[bracketed placeholders]</span> with your specifics
+</footer>
+
+<script>
+  function filterCards(cat, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    document.querySelectorAll('.card').forEach(card => {
+      if (cat === 'all' || card.dataset.cat === cat) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    // Show/hide section headers
+    document.querySelectorAll('.section-header').forEach(header => {
+      if (cat === 'all') {
+        header.style.display = '';
+        return;
+      }
+      // Check if next siblings in cat exist
+      let next = header.nextElementSibling;
+      let hasVisible = false;
+      while (next && !next.classList.contains('section-header')) {
+        if (next.dataset.cat === cat) hasVisible = true;
+        next = next.nextElementSibling;
+      }
+      header.style.display = hasVisible ? '' : 'none';
+    });
+  }
+
+  function copyPrompt(btn) {
+    const promptEl = btn.previousElementSibling;
+    const text = promptEl.innerText.replace(/\n/g, ' ');
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✓ Copied';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copy Prompt';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+</script>
+</body>
+</html>
